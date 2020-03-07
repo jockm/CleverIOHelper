@@ -91,7 +91,7 @@ int gpioSetEdge(int gpio, int rising, int falling) {
 int gpioExport(int gpio) {
     int efd;
     char buf[50];
-    int gpiofd, ret;
+    int ret;
 
     /* Quick test if it has already been exported */
     const char *buf1 = getGPIOPath(gpio, "value");
@@ -127,7 +127,7 @@ int gpioUnexport(int gpio) {
     ret = write(gpiofd, buf, strlen(buf));
     close(gpiofd);
 
-    return 0;
+    return ret;
 }
 
 int gpioRead(int gpio) {
@@ -154,7 +154,7 @@ int gpioRead(int gpio) {
 }
 
 int gpioWrite(int gpio, int val) {
-    int nread, ret, gpiofd;
+    int ret, gpiofd;
 
     const char *buf = getGPIOPath(gpio, "value");
     gpiofd = open(buf, O_RDWR);
@@ -174,7 +174,7 @@ int gpioWrite(int gpio, int val) {
 }
 
 int gpioSelect(int gpio) {
-    int ret = 0, buf, irqfd;
+    int buf, irqfd;
     fd_set fds;
     FD_ZERO(&fds);
 
@@ -186,15 +186,15 @@ int gpioSelect(int gpio) {
     }
 
     // Read first since there is always an initial status
-    ret = read(irqfd, &buf, sizeof (buf));
+    read(irqfd, &buf, sizeof (buf));
 
     while (1) {
         FD_SET(irqfd, &fds);
-        ret = select(irqfd + 1, NULL, NULL, &fds, NULL);
+        select(irqfd + 1, NULL, NULL, &fds, NULL);
         if (FD_ISSET(irqfd, &fds)) {
             FD_CLR(irqfd, &fds); //Remove the filedes from set
             // Clear the junk data in the IRQ file
-            ret = read(irqfd, &buf, sizeof (buf));
+            read(irqfd, &buf, sizeof (buf));
             return 1;
         }
     }

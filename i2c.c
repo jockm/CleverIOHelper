@@ -48,7 +48,7 @@ int i2cInit(void) {
 int i2cOpen(int bus, int addr) {
     char path[101];
 
-    snprintf(path, sizeof (path), "/dev/i2c-", bus);
+    snprintf(path, sizeof(path), "/dev/i2c-%d", bus);
     int ret = open(path, O_RDWR);
     if (ret < 0) {
         return ret;
@@ -59,6 +59,8 @@ int i2cOpen(int bus, int addr) {
         close(ret);
         return -1000;
     }
+	
+	return ret;
 }
 
 int i2cClose(int i2cId) {

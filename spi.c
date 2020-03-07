@@ -67,9 +67,8 @@ int spiInit(void) {
 
 int spiWrite(int spiId, uint8_t *data, int dataLen) {
     int status;
-    uint16_t ii, len;
+    uint16_t len;
     uint8_t buf[SPIDEV_MAXPATH];
-    char wrmsg_text[4096];
 
     if (spiId < 0 || spiId >= MAX_SPI) {
         return -1000;
@@ -101,7 +100,7 @@ int spiWrite(int spiId, uint8_t *data, int dataLen) {
 
 int spiRead(int spiId, uint8_t *data, int dataLen) {
     uint8_t rxbuf[SPIDEV_MAXPATH];
-    int status, len, ii;
+    int status, len;
 
     if (spiId < 0 || spiId >= MAX_SPI) {
         return -1000;
@@ -128,7 +127,7 @@ int spiRead(int spiId, uint8_t *data, int dataLen) {
 }
 
 int spiXfer(int spiId, uint8_t *data, int dataLen, uint8_t *recvData, int usecDelay) {
-    uint16_t ii, len;
+    uint16_t len;
     int status;
     uint16_t delay_usecs = usecDelay;
 
@@ -232,10 +231,9 @@ int spiXfer(int spiId, uint8_t *data, int dataLen, uint8_t *recvData, int usecDe
 int spiXfer2(int spiId, uint8_t *data, int dataLen, uint8_t *recvData, int usecDelay) {
     int status;
     uint16_t delay_usecs = usecDelay;
-    uint16_t ii, len;
+    uint16_t len;
     struct spi_ioc_transfer xfer;
     uint8_t *txbuf, *rxbuf;
-    char wrmsg_text[4096];
 
     if (spiId < 0 || spiId >= MAX_SPI) {
         return -1000;
@@ -394,7 +392,7 @@ int spiSetMode(int spiId, int newMode) {
 }
 
 int spiSetCSHigh(int spiId, int val) {
-    uint8_t mode, tmp;
+    uint8_t tmp;
             int ret;
 
     if (spiId < 0 || spiId >= MAX_SPI) {
@@ -417,7 +415,7 @@ int spiSetCSHigh(int spiId, int val) {
 }
 
 int spiSetLSBFirst(int spiId, int val) {
-    uint8_t mode, tmp;
+    uint8_t tmp;
             int ret;
 
     if (spiId < 0 || spiId >= MAX_SPI) {
@@ -440,7 +438,7 @@ int spiSetLSBFirst(int spiId, int val) {
 }
 
 int spiSet3wire(int spiId, int val) {
-    uint8_t mode, tmp;
+    uint8_t tmp;
             int ret;
 
     if (spiId < 0 || spiId >= MAX_SPI) {
@@ -463,7 +461,7 @@ int spiSet3wire(int spiId, int val) {
 }
 
 int spiSetNoCS(int spiId, int val) {
-    uint8_t mode, tmp;
+    uint8_t tmp;
             int ret;
 
     if (spiId < 0 || spiId >= MAX_SPI) {
@@ -487,7 +485,7 @@ int spiSetNoCS(int spiId, int val) {
 
 
 int spiSetLoop(int spiId, int val) {
-    uint8_t mode, tmp;
+    uint8_t tmp;
             int ret;
 
     if (spiId < 0 || spiId >= MAX_SPI) {
