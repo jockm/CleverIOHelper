@@ -45,7 +45,7 @@ int gpioSetDirection(int gpio, int dir);
 int gpioSetEdge(int gpio, int rising, int falling);
 int gpioRead(int gpio);
 int gpioWrite(int gpio, int val);
-int gpioSelect(int gpio);
+int gpioSelect(int gpio, int timeout);
 int gpioUnexport(int gpio);
 
 int gpioGetFd(int gpio);

@@ -173,7 +173,7 @@ int gpioWrite(int gpio, int val) {
     return 1;
 }
 
-int gpioSelect(int gpio) {
+int gpioSelect(int gpio, int timeout) {
     int buf, irqfd;
     fd_set fds;
     FD_ZERO(&fds);
