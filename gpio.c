@@ -176,6 +176,7 @@ int gpioWrite(int gpio, int val) {
 int gpioSelect(int gpio, int timeout) {
     int buf, irqfd;
     fd_set fds;
+	struct timeval tv;
     FD_ZERO(&fds);
 
     const char *gpio_irq = getGPIOPath(gpio, "value");
@@ -185,12 +186,16 @@ int gpioSelect(int gpio, int timeout) {
         return -1;
     }
 
+	if(timeout > 0) {
+		tv.tv_sec = timeout / 1000;
+		tv.tv_usec = (timeout % 1000) * 1000;
+	}
     // Read first since there is always an initial status
     read(irqfd, &buf, sizeof (buf));
 
     while (1) {
         FD_SET(irqfd, &fds);
-        select(irqfd + 1, NULL, NULL, &fds, NULL);
+        select(irqfd + 1, NULL, NULL, &fds, timeout < 0 ? NULL : & tv);
         if (FD_ISSET(irqfd, &fds)) {
             FD_CLR(irqfd, &fds); //Remove the filedes from set
             // Clear the junk data in the IRQ file
