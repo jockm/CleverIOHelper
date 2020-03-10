@@ -196,14 +196,18 @@ int gpioSelect(int gpio, int timeout) {
 
     while (1) {
         FD_SET(irqfd, &fds);
-        int numSets = select(irqfd + 1, NULL, NULL, &fds, timeout < 0 ? NULL : & tv);
+        /*int numSets = */select(irqfd + 1, NULL, NULL, &fds, timeout <= 0 ? NULL : & tv);
+	// printf("Duck numSets %d\n", numSets);
 
         if (FD_ISSET(irqfd, &fds)) {
             FD_CLR(irqfd, &fds); //Remove the filedes from set
             // Clear the junk data in the IRQ file
             read(irqfd, &buf, sizeof (buf));
+            
+            close(irqfd);
             return 1;
         } else {
+            close(irqfd);
             return 0;
         }
     }

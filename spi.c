@@ -17,6 +17,8 @@
 #include <linux/ioctl.h>
 #include <unistd.h>
 #include <stdint.h>
+#include <pthread.h>
+
 
 #include "cleveriohelper.h"
 
@@ -605,5 +607,25 @@ int spiClose(int spiId) {
             spiObjects[spiId].max_speed_hz = 0;
 
     return 0;
+}
+
+static pthread_mutex_t transationLock = PTHREAD_MUTEX_INITIALIZER;
+
+int spiBeginTransaction(int wait)
+{
+	int  ret = 0;
+	
+	do {
+		ret = pthread_mutex_trylock(&transationLock);
+	} while(wait && ret != 0);
+		
+	return ret;
+}
+
+
+int spiEndTransaction(void)
+{
+	int ret = pthread_mutex_unlock(&transationLock);
+	return ret;
 }
 

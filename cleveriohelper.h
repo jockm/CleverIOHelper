@@ -68,6 +68,9 @@ int spiInit(void);
 int spiOpen(int bus, int device);
 int spiClose(int spiId);
 
+int spiBeginTransaction(int wait);
+int spiEndTransaction(void);
+
 int spiSetMode(int spiId, int newMode);
 int spiSetCSHigh(int spiId, int val);
 int spiSetLSBFirst(int spiId, int val);
