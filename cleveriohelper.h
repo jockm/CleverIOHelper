@@ -55,6 +55,10 @@ int gpioGetFd(int gpio);
 int i2cInit(void);
 int i2cOpen(int bus, int addr);
 int i2cClose(int i2cId);
+
+int i2cBeginTransaction(int wait);
+int i2cEndTransaction(void);
+
 int i2cRead(int i2cId);
 int i2cWrite(int i2cId, int data);
 int i2cWriteRegister8(int i2cId, int reg, int value);
@@ -104,10 +108,22 @@ int ili9341Open(int bus, int dev, int dcPin, int mhz, int rot, int colorMode, in
 int ili9341Close(void);
 int ili9341Draw(int x1, int y1, int x2, int y2, uint8_t *displayBuffer);
 
+//////////////////////////////////////////////////////////////////
 
-#   ifdef __cplusplus
-    }
-#   endif
+void *metadataOpen(const char *fname);
+void metatadatClose(void *file);
+
+char *metadataGetTitle(void *file);
+char *metadataGetArtist(void *file);
+char *metadataGetAlbum(void *file);
+char *metadataGetComment(void *file);
+int   metadataGetYear(void *file);
+int   metadataGetTrackNo(void *file);
+int   metadataGetLength(void *file);
+int   metadataGetBitrate(void *file);
+int   metadataGetSamplerate(void *file);
+int   metadataGetChannels(void *file);
+
 
 #endif /* CLEVERIOHELPER_H */
 

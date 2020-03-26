@@ -38,7 +38,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/gpio.o \
 	${OBJECTDIR}/i2c.o \
 	${OBJECTDIR}/ili9341.o \
-	${OBJECTDIR}/spi.o
+	${OBJECTDIR}/spi.o \
+	${OBJECTDIR}/tags.o
 
 
 # C Compiler Flags
@@ -84,6 +85,11 @@ ${OBJECTDIR}/spi.o: spi.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/spi.o spi.c
+
+${OBJECTDIR}/tags.o: tags.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/tags.o tags.c
 
 # Subprojects
 .build-subprojects:

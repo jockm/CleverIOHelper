@@ -8,6 +8,7 @@
 #include <linux/i2c-dev.h>
 #include <unistd.h>
 #include <errno.h>
+#include <pthread.h>
 
 #include "cleveriohelper.h"
 
@@ -164,6 +165,25 @@ int i2cReadRegister16(int i2cId, int reg) {
 }
 
 
+static pthread_mutex_t transationLock = PTHREAD_MUTEX_INITIALIZER;
+
+int i2cBeginTransaction(int wait)
+{
+	int  ret = 0;
+	
+	do {
+		ret = pthread_mutex_trylock(&transationLock);
+	} while(wait && ret != 0);
+		
+	return ret;
+}
+
+
+int i2cEndTransaction(void)
+{
+	int ret = pthread_mutex_unlock(&transationLock);
+	return ret;
+}
 
 
 
