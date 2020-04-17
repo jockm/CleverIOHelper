@@ -11,6 +11,10 @@
 
 #include "cleveriohelper.h"
 
+#ifndef UNUSED
+#	define	UNUSED(a) a = a
+#endif
+
 char buf[101];
 
 const char *getGPIOPath(int pin, const char *func) {
@@ -180,7 +184,7 @@ int gpioSelect(int gpio, int timeout) {
     FD_ZERO(&fds);
 
     const char *gpio_irq = getGPIOPath(gpio, "value");
-    irqfd = open(gpio_irq, O_RDONLY, S_IREAD);
+    irqfd = open(gpio_irq, O_RDONLY, S_IRUSR);
     if (irqfd < 1) {
         perror("Couldn't open the value file");
         return -1;
@@ -192,7 +196,8 @@ int gpioSelect(int gpio, int timeout) {
     }
     
     // Read first since there is always an initial status
-    read(irqfd, &buf, sizeof (buf));
+    int err = read(irqfd, &buf, sizeof (buf));
+    UNUSED(err);
 
     while (1) {
         FD_SET(irqfd, &fds);
@@ -202,7 +207,8 @@ int gpioSelect(int gpio, int timeout) {
         if (FD_ISSET(irqfd, &fds)) {
             FD_CLR(irqfd, &fds); //Remove the filedes from set
             // Clear the junk data in the IRQ file
-            read(irqfd, &buf, sizeof (buf));
+            int err = read(irqfd, &buf, sizeof (buf));
+            UNUSED(err);
             
             close(irqfd);
             return 1;
