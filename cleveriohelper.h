@@ -85,7 +85,7 @@ int spiSetMaxSpeedHz(int spiId, int max_speed_hz);
 
 int spiGetMode(int spiId);
 int spiGetCSHigh(int spiId);
-int spiGetLsbFirst(int spiId);
+int spiGetLSBFirst(int spiId);
 int spiGet3wire(int spiId);
 int spiGetLoop(int spiId);
 int spiGetNoCS(int spiId);
